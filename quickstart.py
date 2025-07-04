@@ -1,110 +1,85 @@
-'''
-Created by Frederikme (TeetiFM)
-'''
+"""
+Bot de Tinder personalizado para Joel
+Modificado por ChatGPT - Loop infinito tras ajuste de distancia + Recs reset
+"""
 
+import requests
+import time
+import keyboard
 from tinderbotz.session import Session
 from tinderbotz.helpers.constants_helper import *
 
+def get_current_location():
+    try:
+        response = requests.get("https://ipinfo.io/json")
+        data = response.json()
+        loc = data.get("loc")  # Formato: "lat,long"
+        if loc:
+            latitude, longitude = map(float, loc.split(','))
+            return latitude, longitude
+    except Exception as e:
+        print("⚠️ Error obteniendo la ubicación automática:", e)
+    return 25.7617, -80.1918  # Fallback: Miami
+
 if __name__ == "__main__":
-    # creates instance of session
-    session = Session()
-    # Or if you want to use a proxy
-    # AUTHORISED BY IP -> "HOST:PORT"
-    # AUTHORISED BY USERNAME, PASSWORD -> "username:password@HOST:PORT"
-    session = Session(proxy="23.23.23.23:3128")
+    session = Session(store_session=True)
 
-    # set location (Don't need to be logged in for this)
-    session.set_custom_location(latitude=50.879829, longitude=4.700540)
-    
-    # replace this with your own email and password!
-    email = "example@gmail.com"
-    password = "password123"
-    
-    # login using your google account with a verified email!
-    session.login_using_google(email, password)
+    # Establecer ubicación
+    lat, lon = get_current_location()
+    print(f"🌎 Ubicación detectada: {lat}, {lon}")
+    session.set_custom_location(latitude=lat, longitude=lon)
 
-    # Alternatively you can login using facebook with a connected profile!
-    session.login_using_facebook(email, password)
+    # Login manual
+    print("🔐 Abriendo Tinder. Inicia sesión manualmente...")
+    session.browser.get("https://tinder.com")
+    input("Presiona ENTER cuando hayas iniciado sesión correctamente...")
 
-    # Alternatively, you can also use your phone number to login
-    '''
-    - country is needed to get the right prefix, in my case +32
-    - phone_number is everything after the prefix (+32)
-    NOTE: this is not my phone number :)
-    '''
-    country = "Belgium"
-    phone_number = "479011124"
-    session.login_using_sms(country, phone_number)
+    print("♻️ Iniciando ciclo infinito. Presiona 'q' para detener.")
+    try:
+        while True:
+            if keyboard.is_pressed('q'):
+                print("🛑 Bot detenido por el usuario.")
+                break
 
-    # spam likes, dislikes and superlikes
-    # to avoid being banned:
-    #   - it's best to apply a randomness in your liking by sometimes disliking.
-    #   - some sleeping between two actions is recommended
-    # by default the amount is 1, ratio 100% and sleep 1 second
-    session.like(amount=10, ratio="72.5%", sleep=1)
-    session.dislike(amount=1)
-    session.superlike(amount=1)
-    
-    # adjust allowed distance for geomatches
-    # Note: PARAMETER IS IN KILOMETERS!
-    session.set_distance_range(km=150)
+            # Posicionarse en la sección de recomendaciones
+            session.browser.get("https://tinder.com/app/recs")
 
-    # set range of prefered age
-    session.set_age_range(18, 55)
+            # Acciones básicas
+            session.like(amount=1000, ratio="72.5%", sleep=1)
+            session.dislike(amount=1)
+            session.superlike(amount=1)
 
-    # set interested in gender(s) -> options are: WOMEN, MEN, EVERYONE
-    session.set_sexuality(Sexuality.WOMEN)
+            # Ajustar preferencias
+            session.set_distance_range(km=150)
+            session.set_age_range(18, 55)
+            session.set_sexuality(Sexuality.WOMEN)
+            session.set_global(True)
 
-    # Allow profiles from all over the world to appear
-    session.set_global(True)
+            # Guardar matches antiguos
+            for match in session.get_messaged_matches():
+                session.store_local(match)
 
-    # Getting matches takes a while, so recommended you load as much as possible from local storage
-    # get new matches, with whom you haven't interacted yet
-    # Let's load the first 10 new matches to interact with later on.
-    # quickload on false will make sure ALL images are stored, but this might take a lot more time
-    new_matches = session.get_new_matches(amount=10, quickload=False)
-    # get already interacted with matches (matches with whom you've chatted already)
-    messaged_matches = session.get_messaged_matches()
-    
-    # you can store the data and images of these matches now locally in data/matches
-    # For now let's just store the messaged_matches
-    for match in messaged_matches:
-        session.store_local(match)
+            # Enviar mensajes a nuevos matches
+            new_matches = session.get_new_matches(amount=10, quickload=False)
+            pickup_line = "Hey {}! You. Me. Pizza? O no te gusta la pizza?"
+            for match in new_matches:
+                name = match.get_name()
+                chat_id = match.get_chat_id()
+                print(f"💬 Enviando mensaje a: {name}")
+                session.send_message(chatid=chat_id, message=pickup_line.format(name))
+                session.send_gif(chatid=chat_id, gifname="")
+                session.send_song(chatid=chat_id, songname="")
+                session.send_socials(chatid=chat_id, media=Socials.INSTAGRAM, value="Fredjemees")
 
-    # Pick up line with their personal name so it doesn't look spammy
-    pickup_line = "Hey {}! You. Me. Pizza? Or do you not like pizza?"
+            # Geomatches
+            for _ in range(5):
+                geomatch = session.get_geomatch(quickload=False)
+                session.store_local(geomatch)
+                session.dislike()
 
-    # loop through my new matches and send them the first message of the conversation
-    for match in new_matches:
-        # store name and chatid in variables so we can use it more simply later on
-        name = match.get_name()
-        id = match.get_chat_id()
+            time.sleep(5)
 
-        print(name, id)
-
-        # Format the match her/his name in your pickup line for a more personal approach.
-        message = pickup_line.format(name)
-
-        # send pick up line with their name in it to all my matches
-        session.send_message(chatid=id, message=message)
-
-        # send a funny gif
-        session.send_gif(chatid=id, gifname="")
-
-        # send a funny song
-        session.send_song(chatid=id, songname="")
-
-        # send instagram or other socials like facebook, phonenumber and snapchat
-        session.send_socials(chatid=id, media=Socials.INSTAGRAM, value="Fredjemees")
-
-        # you can also unmatch
-        #session.unmatch(chatid=id)
-
-    # let's scrape some geomatches now
-    for _ in range(5):
-        # get profile data (name, age, bio, images, ...)
-        geomatch = session.get_geomatch(quickload=False)
-        # store this data locally as json with reference to their respective (locally stored) images
-        session.store_local(geomatch)
-        # dislike the profile, so it will show us the next geomatch (since we got infinite amount of dislikes anyway)
-        session.dislike()
+    except KeyboardInterrupt:
+        print("🛑 Bot detenido con Ctrl+C")
+    except Exception as e:
+        print(f"❌ Error en la ejecución del ciclo: {e}")

@@ -1,7 +1,8 @@
 # Selenium: automation of browser
 from selenium import webdriver
-# from webdriver_manager.chrome import ChromeDriverManager
-import undetected_chromedriver.v2 as uc
+# Eliminamos webdriver-manager ya que usaremos la función nativa de undetected_chromedriver
+import undetected_chromedriver as uc
+
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -70,14 +71,14 @@ class Session:
                 y = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
                 print("Ended session: {}".format(y))
             
-            # Close browser properly
-            self.browser.quit()
+                # Close browser properly
+                self.browser.quit()
 
         # Go further with the initialisation
         # Setting some options of the browser here below
 
         options = uc.ChromeOptions()
-
+        
         # Create empty profile to avoid annoying Mac Popup
         if store_session:
             if not user_data:
@@ -93,7 +94,7 @@ class Session:
         options.add_argument("--lang=en-GB")
 
         if headless:
-            options.headless = True
+            options.add_argument("--headless=new")
 
         if proxy:
             if '@' in proxy:
@@ -112,8 +113,13 @@ class Session:
 
         # Getting the chromedriver from cache or download it from internet
         print("Getting ChromeDriver ...")
-        self.browser = uc.Chrome(options=options)  # ChromeDriverManager().install(),
-        # self.browser = webdriver.Chrome(options=options)
+        
+        # --- NUEVA SOLUCIÓN ---
+        # Forzamos a undetected_chromedriver a usar el driver para la versión 137 de Chrome.
+        # Esto soluciona el error de incompatibilidad de versiones.
+        # Si actualizas Chrome en el futuro, solo necesitas cambiar este número.
+        self.browser = uc.Chrome(options=options, version_main=137)
+        
         # self.browser.set_window_size(1250, 750)
 
         # clear the console based on the operating system you're using
@@ -501,4 +507,3 @@ class Session:
             print(f"You've liked {self.session_data['like']} profiles during this session.")
         if dislikes > 0:
             print(f"You've disliked {self.session_data['dislike']} profiles during this session.")
-
