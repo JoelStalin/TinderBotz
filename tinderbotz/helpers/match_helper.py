@@ -5,10 +5,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException, StaleElementReferenceException, NoSuchElementException
 import time
 
-from tinderbotz.helpers.match import Match
-from tinderbotz.helpers.constants_helper import Socials
-from tinderbotz.helpers.loadingbar import LoadingBar
-from tinderbotz.helpers.xpaths import content, modal_manager
+from tinderbotj.helpers.match import Match
+from tinderbotj.helpers.constants_helper import Socials
+from tinderbotj.helpers.loadingbar import LoadingBar
+from tinderbotj.helpers.xpaths import content, modal_manager
 
 class MatchHelper:
 

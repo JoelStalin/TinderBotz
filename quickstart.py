@@ -6,8 +6,8 @@ Modificado por ChatGPT - Loop infinito tras ajuste de distancia + Recs reset
 import requests
 import time
 import keyboard
-from tinderbotz.session import Session
-from tinderbotz.helpers.constants_helper import *
+from tinderbotj.session import Session
+from tinderbotj.helpers.constants_helper import *
 
 def get_current_location():
     try:

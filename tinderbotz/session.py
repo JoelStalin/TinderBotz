@@ -19,19 +19,19 @@ import requests
 import atexit
 from pathlib import Path
 
-# Tinderbotz: helper classes
-from tinderbotz.helpers.geomatch import Geomatch
-from tinderbotz.helpers.match import Match
-from tinderbotz.helpers.profile_helper import ProfileHelper
-from tinderbotz.helpers.preferences_helper import PreferencesHelper
-from tinderbotz.helpers.geomatch_helper import GeomatchHelper
-from tinderbotz.helpers.match_helper import MatchHelper
-from tinderbotz.helpers.login_helper import LoginHelper
-from tinderbotz.helpers.storage_helper import StorageHelper
-from tinderbotz.helpers.email_helper import EmailHelper
-from tinderbotz.helpers.constants_helper import Printouts
-from tinderbotz.helpers.xpaths import *
-from tinderbotz.addproxy import get_proxy_extension
+# tinderbotj: helper classes
+from tinderbotj.helpers.geomatch import Geomatch
+from tinderbotj.helpers.match import Match
+from tinderbotj.helpers.profile_helper import ProfileHelper
+from tinderbotj.helpers.preferences_helper import PreferencesHelper
+from tinderbotj.helpers.geomatch_helper import GeomatchHelper
+from tinderbotj.helpers.match_helper import MatchHelper
+from tinderbotj.helpers.login_helper import LoginHelper
+from tinderbotj.helpers.storage_helper import StorageHelper
+from tinderbotj.helpers.email_helper import EmailHelper
+from tinderbotj.helpers.constants_helper import Printouts
+from tinderbotj.helpers.xpaths import *
+from tinderbotj.addproxy import get_proxy_extension
 
 
 class Session:
@@ -64,7 +64,7 @@ class Session:
 
             # print out the statistics of the session
             try:
-                box = self._get_msg_box(lines=lines, title="Tinderbotz")
+                box = self._get_msg_box(lines=lines, title="tinderbotj")
                 print(box)
             finally:
                 print("Started session: {}".format(self.started))

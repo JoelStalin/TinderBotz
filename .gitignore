@@ -2,7 +2,7 @@ venv
 .idea
 constants.py
 data/
-tinderbotz.egg-info
+tinderbotj.egg-info
 dist
 build
 __pycache__/

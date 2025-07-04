@@ -59,17 +59,17 @@ class Language(enum.Enum):
 class Printouts(enum.Enum):
     BANNER = ''' 
          _____ _           _           _           _       
-        |_   _(_)_ __   __| | ___ _ __| |__   ___ | |_ ____
-          | | | | '_ \ / _` |/ _ \ '__| '_ \ / _ \| __|_  /
-          | | | | | | | (_| |  __/ |  | |_) | (_) | |_ / / 
-          |_| |_|_| |_|\__,_|\___|_|  |_.__/ \___/ \__/___|
+        |_   _(_)_ __   __| | ___ _ __| |__   ___ | |_  
+          | | | | '_ \ / _` |/ _ \ '__| '_ \ / _ \| __| 
+          | | | | | | | (_| |  __/ |  | |_) | (_) | |_  
+          |_| |_|_| |_|\__,_|\___|_|  |_.__/ \___/ \__/ 
         ----------------------------------------------------'''
     
     EXPLANATION = '''
 Hi guys,
 
 This code is opensource and available on GitHub.
-repository: https://github.com/frederikme/TinderBotz
+repository: https://github.com/frederikme/tinderbotj
 
 If you find the code useful, it would mean a lot if you can star the repository to show your appreciation.
 If you're interested in learning how to write these bots yourself,

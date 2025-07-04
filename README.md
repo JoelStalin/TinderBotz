@@ -1,4 +1,4 @@
-# Tinderbotz
+# tinderbotj
 **Consider giving a ⭐ if you like the project!**
 ## Project
 <!-- PROJECT LOGO -->
@@ -147,11 +147,11 @@ Try to use the code when you can see it running. In case you need to handle some
 I've heard some people had to prove they were not bots by doing some captcha and this could age very poorly when you run it overnight. Myself however, I haven't yet had 'the honour' to be redirected to such a captcha. So if you play it safe, there would be no need to panic.
 
 ### 4) Implement sleeps between swipes 
-This might sounds ridiculous, but most people take a look at the profile before they swipe it. Therefore instantly swiping right on every profile puts you in a 'non humanlike behaviour'-zone, which should be tried to be avoided. Adding a sleep between swipes can be done as described [here](https://github.com/frederikme/TinderBotz/blob/master/DOCUMENTATION.md#liking-geomatches). It is recommended to sleep at least 1 second between every swipe. If you have a rather new profile, then make it 2 or 3 (float numbers like 1.5 are also allowed).
+This might sounds ridiculous, but most people take a look at the profile before they swipe it. Therefore instantly swiping right on every profile puts you in a 'non humanlike behaviour'-zone, which should be tried to be avoided. Adding a sleep between swipes can be done as described [here](https://github.com/frederikme/tinderbotj/blob/master/DOCUMENTATION.md#liking-geomatches). It is recommended to sleep at least 1 second between every swipe. If you have a rather new profile, then make it 2 or 3 (float numbers like 1.5 are also allowed).
 
 ### 5) Implement randomness in your liking and disliking
 Same applies as above; most people dislike some profiles and like others. Not liking EVERY profile could help you stay under the radar.
-Example of how to do so can be found [here](https://github.com/frederikme/TinderBotz/blob/master/DOCUMENTATION.md#liking-geomatches).
+Example of how to do so can be found [here](https://github.com/frederikme/tinderbotj/blob/master/DOCUMENTATION.md#liking-geomatches).
 
 ### 6) Make your profile look as real as possible
 Your profile cannot look in any way like those spambots. Therefore a few things can be done.

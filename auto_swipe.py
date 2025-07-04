@@ -5,8 +5,8 @@ This script is meant to be user friendly for beginning users.
 Definitly take a look at quickstart.py for more features!
 '''
 
-from tinderbotz.session import Session
-from tinderbotz.helpers.constants_helper import *
+from tinderbotj.session import Session
+from tinderbotj.helpers.constants_helper import *
 
 if __name__ == "__main__":
 

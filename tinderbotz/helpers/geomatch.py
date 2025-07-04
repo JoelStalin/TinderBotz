@@ -1,4 +1,4 @@
-from tinderbotz.helpers.storage_helper import StorageHelper
+from tinderbotj.helpers.storage_helper import StorageHelper
 
 class Geomatch:
 

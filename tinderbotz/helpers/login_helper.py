@@ -3,7 +3,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, ElementClickInterceptedException, StaleElementReferenceException, NoSuchElementException
 from selenium.webdriver.common.keys import Keys
-from tinderbotz.helpers.xpaths import content
+from tinderbotj.helpers.xpaths import content
 import time
 
 class LoginHelper:

@@ -2,7 +2,7 @@
 Created by Frederikme (TeetiFM)
 '''
 import random, time
-from tinderbotz.session import Session
+from tinderbotj.session import Session
 
 if __name__ == "__main__":
 
