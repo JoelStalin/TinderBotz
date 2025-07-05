@@ -1,6 +1,5 @@
 # Selenium: automation of browser
-from selenium import webdriver
-# Eliminamos webdriver-manager ya que usaremos la función nativa de undetected_chromedriver
+from seleniumwire import webdriver # Import seleniumwire
 import undetected_chromedriver as uc
 
 from selenium.webdriver.support.ui import WebDriverWait
@@ -31,7 +30,7 @@ from tinderbotj.helpers.storage_helper import StorageHelper
 from tinderbotj.helpers.email_helper import EmailHelper
 from tinderbotj.helpers.constants_helper import Printouts
 from tinderbotj.helpers.xpaths import *
-from tinderbotj.addproxy import get_proxy_extension
+# from tinderbotj.addproxy import get_proxy_extension # Removed as addproxy.py will be deleted
 
 
 class Session:
@@ -72,7 +71,8 @@ class Session:
                 print("Ended session: {}".format(y))
             
                 # Close browser properly
-                self.browser.quit()
+                if hasattr(self, 'browser') and self.browser:
+                    self.browser.quit()
 
         # Go further with the initialisation
         # Setting some options of the browser here below
@@ -96,20 +96,31 @@ class Session:
         if headless:
             options.add_argument("--headless=new")
 
+        seleniumwire_options = {}
         if proxy:
             if '@' in proxy:
+                # Proxy with authentication
                 parts = proxy.split('@')
-
-                user = parts[0].split(':')[0]
-                pwd = parts[0].split(':')[1]
-
-                host = parts[1].split(':')[0]
-                port = parts[1].split(':')[1]
-
-                extension = get_proxy_extension(PROXY_HOST=host, PROXY_PORT=port, PROXY_USER=user, PROXY_PASS=pwd)
-                options.add_extension(extension)
+                auth, proxy_url = parts[0], parts[1]
+                user, pwd = auth.split(':')
+                host, port = proxy_url.split(':')
+                seleniumwire_options = {
+                    'proxy': {
+                        'http': f'http://{user}:{pwd}@{host}:{port}',
+                        'https': f'https://{user}:{pwd}@{host}:{port}',
+                        'no_proxy': 'localhost,127.0.0.1'
+                    }
+                }
             else:
-                options.add_argument(f'--proxy-server=http://{proxy}')
+                # Proxy without authentication
+                host, port = proxy.split(':')
+                seleniumwire_options = {
+                    'proxy': {
+                        'http': f'http://{host}:{port}',
+                        'https': f'https://{host}:{port}',
+                        'no_proxy': 'localhost,127.0.0.1'
+                    }
+                }
 
         # Getting the chromedriver from cache or download it from internet
         print("Getting ChromeDriver ...")
@@ -118,7 +129,9 @@ class Session:
         # Forzamos a undetected_chromedriver a usar el driver para la versión 137 de Chrome.
         # Esto soluciona el error de incompatibilidad de versiones.
         # Si actualizas Chrome en el futuro, solo necesitas cambiar este número.
-        self.browser = uc.Chrome(options=options, version_main=137)
+
+        # Use selenium-wire's webdriver, passing undetected_chromedriver's options
+        self.browser = webdriver.Chrome(options=options, seleniumwire_options=seleniumwire_options, version_main=137)
         
         # self.browser.set_window_size(1250, 750)
 
